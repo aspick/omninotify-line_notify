@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ```ruby
 Omninotify.config do
-	target :line_notify, <token>
+	target Omninotify::LineNotify.new('token')
 end
 
 Omninotify.notify("done awesome actions")

@@ -1,13 +1,29 @@
 require "omninotify/line_notify/version"
+require 'faraday'
 
 module Omninotify
   module LineNotify
-    def notify(message, options = {})
-      # retrieve token
+    class Client  < Base
+      def initialize(token)
+        @token = token
+      end
 
-			# create http post
+      def notify(message, options = {})
+        # retrieve token
+        token = @token
 
-			# send
+  			# create http post
+        url = 'https://notify-api.line.me/api/notify'
+        conn = ::Faraday.new(url: url)
+        conn.authorization :Bearer, 'Bearer ' + token
+        response = conn.post do |req|
+          req.body = {message: message}
+        end
+      end
+
+      def key
+        :line_notify
+      end
     end
   end
 end
